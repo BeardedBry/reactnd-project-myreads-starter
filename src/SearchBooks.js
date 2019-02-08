@@ -1,22 +1,39 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
+import './App.css'
 
-class SearchBook extends Component {
+class SearchBooks extends Component {
 
     state = {
-        books: []
+        books: [],
+        shelfBooks: []
     }
 
-
     componentDidMount() {
-        
+        BooksAPI.getAll().then(books => {
+          this.setState({ shelfBooks: books })
+        })
+      }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.query !== prevProps.query && this.props.query.length > 0){
+        BooksAPI.search(this.props.query).then(query => (
+            (query.length > 0  &&
+                this.setState({books: query.filter(book => book.imageLinks)})
+                //console.log(query.filter(book => book.imageLinks))
+            )
+            //console.log(query.map(obj => obj.imageLinks.thumbnail))
+       ))
+       
+    }else if(this.props.query !== prevProps.query){
+        this.setState({books:[]})
+    }
+    //   if(this.props.query !== prevProps.query && this.props.query === '')
+    //     this.setState({books:[]})
     }
 
 
     render(){
-
-        const { book, bookQuery} = this.props;
-
         const options = [
             {value: 'currentlyReading', content: 'Currently Reading'},
             {value: 'wantToRead', content: 'Want to Read'},
@@ -24,8 +41,13 @@ class SearchBook extends Component {
             {value: 'none', content: 'None'}
         ]
 
+        const { books } = this.state.books
+
 
         return(
+            (this.state.books.length > 0 && 
+            <ol className="books-grid">
+             { this.state.books.map((book) =>(
             <li key={book.id}>
             <div className="book">
               <div className="book-top">
@@ -33,7 +55,7 @@ class SearchBook extends Component {
                 <div className="book-shelf-changer">
                   <select
                     value={book.shelf}
-                     onChange={(e) => moveToShelf(e.target.value, book)} //need to add function
+                     onChange={(e) => this.props.moveToShelf(e.target.value, book)} //need to add function
                   >
                   <option value="move" disabled>Move to...</option>
                   {options.map(option => (
@@ -48,6 +70,8 @@ class SearchBook extends Component {
               <div className="book-authors">{book.author}</div>
             </div>
           </li>
+             )) }
+            </ol> )
         )
     }
 }

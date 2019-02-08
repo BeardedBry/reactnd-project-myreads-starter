@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import Book from './Book.js'
+import SearchBooks from './SearchBooks.js'
 import * as BooksAPI from './BooksAPI'
 
 class Search extends Component {
 
     state = {
         query: '',
-        books: []
     }
 
     updateQuery = (val) => {
@@ -17,13 +16,6 @@ class Search extends Component {
     }
 
     render(){
-
-        let booksExist;
-        if(this.state.books.length > 0){
-            booksExist = true
-        } else{
-            booksExist = false
-        }
 
         return (
             <div className="search-books">
@@ -48,15 +40,7 @@ class Search extends Component {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid">
-              { (booksExist &&
-                  this.state.books.map(book => (
-                  <Book book={book} key={book.id}/>
-              ))  )}
-              {/* {books.map(book => (
-                  <li>{book.title}</li>
-              ))} */}
-              </ol>
+                { <SearchBooks query={this.state.query} moveToShelf={this.props.moveToShelf}/> }
             </div>
           </div>
         )
