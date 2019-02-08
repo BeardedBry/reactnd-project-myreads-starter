@@ -100,7 +100,7 @@ class BooksApp extends React.Component {
           )}/>
 
           <Route path='/search' render={()=> (
-            <Search BooksAPI={BooksAPI}/>
+            <Search />
           )}/>
 
       </div>

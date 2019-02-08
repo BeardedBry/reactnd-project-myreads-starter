@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-//import { Link } from 'react-router-dom'
-//import * as BooksAPI from './BooksAPI'
+import Book from './Book.js'
+import * as BooksAPI from './BooksAPI'
 
 class Search extends Component {
 
@@ -12,14 +12,19 @@ class Search extends Component {
 
     updateQuery = (val) => {
         this.setState({
-            query: val.trim()
+            query: val
         })
-        // BooksAPI.search(this.state.query).then(query => (
-        //     //Function to list books here. maybe another component?
-        // ));
     }
 
     render(){
+
+        let booksExist;
+        if(this.state.books.length > 0){
+            booksExist = true
+        } else{
+            booksExist = false
+        }
+
         return (
             <div className="search-books">
             <div className="search-books-bar">
@@ -43,7 +48,15 @@ class Search extends Component {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+              { (booksExist &&
+                  this.state.books.map(book => (
+                  <Book book={book} key={book.id}/>
+              ))  )}
+              {/* {books.map(book => (
+                  <li>{book.title}</li>
+              ))} */}
+              </ol>
             </div>
           </div>
         )
