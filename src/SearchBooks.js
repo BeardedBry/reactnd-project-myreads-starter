@@ -11,27 +11,61 @@ class SearchBooks extends Component {
 
     componentDidMount() {
         BooksAPI.getAll().then(books => {
-          this.setState({ shelfBooks: books })
+          this.setState({ shelfBooks: books})
         })
       }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.query !== prevProps.query && this.props.query.length > 0){
-        BooksAPI.search(this.props.query).then(query => (
-            (query.length > 0  &&
-                this.setState({books: query.filter(book => book.imageLinks)})
-                //console.log(query.filter(book => book.imageLinks))
-            )
-            //console.log(query.map(obj => obj.imageLinks.thumbnail))
-       ))
-       
-    }else if(this.props.query !== prevProps.query){
-        this.setState({books:[]})
-    }
+        BooksAPI.search(this.props.query).then((query) => {
+            return (query.length > 0  &&
+                this.setState(({books} ) =>{
+                    query = query.filter(book => book.imageLinks)
+                    const getQueryIds = query.map(book => book.id)
+                    const currentBookIds = prevState.shelfBooks.map(book => book.id)
+
+                    const newQuery = query.map(book => {
+                        let matchingId = prevState.shelfBooks.indexOf(prevState.shelfBooks.find(shelfBook => shelfBook.id === book.id ))
+                        if(matchingId >= 0){
+                          //  console.log(prevState.shelfBooks[matchingId])
+                            book.shelf = prevState.shelfBooks[matchingId].shelf
+                            return book;
+                        }else{
+                        return book;
+                        }
+                    })
+                    return { books: newQuery }
+                })   
+                )
+        })
+
+
+  
+        }else if(this.props.query !== prevProps.query){
+         this.setState({books:[]})
+         }
     //   if(this.props.query !== prevProps.query && this.props.query === '')
     //     this.setState({books:[]})
     }
 
+    moveShelf = (shelf, book) => {
+        //Function that changes the shelf of a book. in the state AND on the server!
+        let currentBook = this.state.books.findIndex(obj => obj.id === book.id ); 
+        let newBookShelf = this.state.books;
+        newBookShelf[currentBook].shelf = shelf
+    
+        BooksAPI.update(book, shelf);
+    
+        this.setState({
+          books: newBookShelf
+        })
+        BooksAPI.getAll().then(books => {
+            this.setState({ shelfBooks: books})
+          })
+
+        // const existingBook = this.state.books.filter(book => book.id === this.state.shelfBooks.find(book.id))
+        // console.log({existingBook})
+      }
 
     render(){
         const options = [
@@ -41,8 +75,10 @@ class SearchBooks extends Component {
             {value: 'none', content: 'None'}
         ]
 
-        const { books } = this.state.books
 
+        const { books } = this.state.books
+        const { inventory } = this.state.shelfBooks
+    
 
         return(
             (this.state.books.length > 0 && 
@@ -54,8 +90,8 @@ class SearchBooks extends Component {
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`}}></div>
                 <div className="book-shelf-changer">
                   <select
-                    value={book.shelf}
-                     onChange={(e) => this.props.moveToShelf(e.target.value, book)} //need to add function
+                    value={book.shelf || options[3].value}
+                     onChange={(e) => this.moveShelf(e.target.value, book)} //need to add function
                   >
                   <option value="move" disabled>Move to...</option>
                   {options.map(option => (

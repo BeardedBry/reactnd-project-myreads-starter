@@ -16,6 +16,7 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     //showSearchPage: false
+    search: [],
   }
 
   componentDidMount() {
@@ -37,6 +38,13 @@ class BooksApp extends React.Component {
       books: newBookShelf
     })
   }
+
+  update = () =>{
+    BooksAPI.getAll().then(books => {
+      this.setState({ books })
+    })
+  }
+
 
   render() {
 
@@ -73,7 +81,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
 
                     {wantToRead.map((book) =>(
-                        <Book book={book} key={book.id} moveToShelf={this.moveShelf}/>
+                        <Book book={book} key={book.id} moveToShelf={this.moveShelf.bind(this)}/>
                       ))}                   
 
                     </ol>
@@ -100,7 +108,7 @@ class BooksApp extends React.Component {
           )}/>
 
           <Route path='/search' render={()=> (
-            <Search />
+            <Search update={this.update.bind(this)}/>
           )}/>
 
       </div>

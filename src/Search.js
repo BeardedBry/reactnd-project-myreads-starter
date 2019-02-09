@@ -15,12 +15,14 @@ class Search extends Component {
         })
     }
 
+
+
     render(){
 
         return (
             <div className="search-books">
             <div className="search-books-bar">
-              <Link className="close-search" to="/">Close</Link>
+              <Link className="close-search" to="/" onClick={this.props.update}>Close</Link>
               <div className="search-books-input-wrapper">
                 {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -40,7 +42,7 @@ class Search extends Component {
               </div>
             </div>
             <div className="search-books-results">
-                { <SearchBooks query={this.state.query} moveToShelf={this.props.moveToShelf}/> }
+                { <SearchBooks query={this.state.query} /> }
             </div>
           </div>
         )
