@@ -26,7 +26,7 @@ class SearchBooks extends Component {
                         let matchingId = prevState.shelfBooks.indexOf(prevState.shelfBooks.find(shelfBook => shelfBook.id === book.id ))
                         if(matchingId >= 0){
                           //  console.log(prevState.shelfBooks[matchingId])
-                            book.shelf = prevState.shelfBooks[matchingId].shelf 
+                            book.shelf = prevState.shelfBooks[matchingId].shelf // May be wierd, but it works.
                             return book;
                         }else{
                         return book;
@@ -101,7 +101,7 @@ class SearchBooks extends Component {
                 </div>
               </div>
               <div className="book-title">{book.title}</div>
-              <div className="book-authors">{book.author}</div>
+              <div className="book-authors">{book.authors.map(author => <div>{author} <br /></div>)}</div>
             </div>
           </li>
              )) }
