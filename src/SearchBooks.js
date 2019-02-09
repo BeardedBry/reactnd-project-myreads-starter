@@ -21,14 +21,12 @@ class SearchBooks extends Component {
             return (query.length > 0  &&
                 this.setState(({books} ) =>{
                     query = query.filter(book => book.imageLinks)
-                    const getQueryIds = query.map(book => book.id)
-                    const currentBookIds = prevState.shelfBooks.map(book => book.id)
 
                     const newQuery = query.map(book => {
                         let matchingId = prevState.shelfBooks.indexOf(prevState.shelfBooks.find(shelfBook => shelfBook.id === book.id ))
                         if(matchingId >= 0){
                           //  console.log(prevState.shelfBooks[matchingId])
-                            book.shelf = prevState.shelfBooks[matchingId].shelf
+                            book.shelf = prevState.shelfBooks[matchingId].shelf 
                             return book;
                         }else{
                         return book;
