@@ -18,7 +18,8 @@ class SearchBooks extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.props.query !== prevProps.query && this.props.query.length > 0){
         BooksAPI.search(this.props.query).then((query) => {
-            return (query.length > 0  &&
+            if(query.length > 0){
+            return (
                 this.setState(({books} ) =>{
                     query = query.filter(book => book.imageLinks)
 
@@ -35,9 +36,10 @@ class SearchBooks extends Component {
                     return { books: newQuery }
                 })   
                 )
+            }else{
+                return this.setState({books: []})
+            }
         })
-
-
   
         }else if(this.props.query !== prevProps.query){
          this.setState({books:[]})
