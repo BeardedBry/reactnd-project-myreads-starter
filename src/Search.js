@@ -42,7 +42,7 @@ class Search extends Component {
               </div>
             </div>
             <div className="search-books-results">
-                { <SearchBooks query={this.state.query} /> }
+                { <SearchBooks query={this.state.query} books={this.props.books} /> }
             </div>
           </div>
         )

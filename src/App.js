@@ -29,7 +29,7 @@ class BooksApp extends React.Component {
     //Function that changes the shelf of a book. in the state AND on the server!
      
     let currentBook = this.state.books.findIndex(obj => obj.id === book.id ); 
-    let newBookShelf = this.state.books;
+    let newBookShelf = [...this.state.books];
     newBookShelf[currentBook].shelf = shelf
 
     BooksAPI.update(book, shelf);
@@ -108,7 +108,7 @@ class BooksApp extends React.Component {
           )}/>
 
           <Route path='/search' render={()=> (
-            <Search update={this.update.bind(this)}/>
+            <Search update={this.update.bind(this)} books={this.state.books}/>
           )}/>
 
       </div>

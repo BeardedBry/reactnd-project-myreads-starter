@@ -6,14 +6,14 @@ class SearchBooks extends Component {
 
     state = {
         books: [],
-        shelfBooks: []
+        shelfBooks: this.props.books
     }
 
-    componentDidMount() {
-        BooksAPI.getAll().then(books => {
-          this.setState({ shelfBooks: books})
-        })
-      }
+    // componentDidMount() {
+    //     BooksAPI.getAll().then(books => {
+    //       this.setState({ shelfBooks: books})
+    //     })
+    //   }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.query !== prevProps.query && this.props.query.length > 0){
@@ -51,7 +51,7 @@ class SearchBooks extends Component {
     moveShelf = (shelf, book) => {
         //Function that changes the shelf of a book. in the state AND on the server!
         let currentBook = this.state.books.findIndex(obj => obj.id === book.id ); 
-        let newBookShelf = this.state.books;
+        let newBookShelf = [...this.state.books];
         newBookShelf[currentBook].shelf = shelf
     
         BooksAPI.update(book, shelf);
