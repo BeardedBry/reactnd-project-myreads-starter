@@ -3,7 +3,6 @@ import * as BooksAPI from './BooksAPI'
 import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import './App.css'
-import Book from './Book.js'
 import Search from './Search.js'
 import Shelf from './Shelf';
 
