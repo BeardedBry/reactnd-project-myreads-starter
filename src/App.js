@@ -5,17 +5,11 @@ import { Link } from 'react-router-dom'
 import './App.css'
 import Book from './Book.js'
 import Search from './Search.js'
+import Shelf from './Shelf';
 
 class BooksApp extends React.Component {
   state = {
     books: [],
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    //showSearchPage: false
     search: [],
   }
 
@@ -63,42 +57,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-
-                      {currentlyReading.map((book) =>(
-                        <Book book={book} key={book.id} moveToShelf={this.moveShelf}/>
-                      ))}
-
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-
-                    {wantToRead.map((book) =>(
-                        <Book book={book} key={book.id} moveToShelf={this.moveShelf.bind(this)}/>
-                      ))}                   
-
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-
-                    {read.map((book) =>(
-                        <Book book={book} key={book.id} moveToShelf={this.moveShelf.bind(this)}/>
-                      ))}
-
-                    </ol>
-                  </div>
-                </div>
+                <Shelf shelf={currentlyReading} moveShelf={this.moveShelf} title={'Currently Reading'} />
+                <Shelf shelf={wantToRead} moveShelf={this.moveShelf} title={'Want to Read'} />
+                <Shelf shelf={read} moveShelf={this.moveShelf} title={'Read'} />
               </div>
             </div>
             <div className="open-search">
@@ -108,7 +69,7 @@ class BooksApp extends React.Component {
           )}/>
 
           <Route path='/search' render={()=> (
-            <Search update={this.update.bind(this)} books={this.state.books}/>
+            <Search update={this.update} books={this.state.books}/>
           )}/>
 
       </div>

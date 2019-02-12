@@ -9,12 +9,6 @@ class SearchBooks extends Component {
         shelfBooks: this.props.books
     }
 
-    // componentDidMount() {
-    //     BooksAPI.getAll().then(books => {
-    //       this.setState({ shelfBooks: books})
-    //     })
-    //   }
-
     componentDidUpdate(prevProps, prevState) {
         if (this.props.query !== prevProps.query && this.props.query.length > 0){
         BooksAPI.search(this.props.query).then((query) => {
