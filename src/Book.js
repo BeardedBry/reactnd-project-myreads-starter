@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
 
-class Book extends Component {
-
+const Book = () => {
+  return {
     render(){
 
         const { book, moveToShelf } = this.props;
@@ -40,6 +40,7 @@ class Book extends Component {
           </li>
         )
     }
+  }
 }
 
 export default Book
