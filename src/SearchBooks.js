@@ -76,8 +76,8 @@ class SearchBooks extends Component {
         ]
 
 
-        const { books } = this.state.books
-        const { inventory } = this.state.shelfBooks
+        //const { books } = this.state.books
+        //const { inventory } = this.state.shelfBooks
     
 
         return(
@@ -103,7 +103,7 @@ class SearchBooks extends Component {
                 </div>
               </div>
               <div className="book-title">{book.title}</div>
-              <div className="book-authors">{(book.authors && book.authors.map(author => <div>{author} <br /></div>))}</div>
+              <div className="book-authors">{(book.authors && book.authors.map((author,index) => <div key={book.id + index}>{author} <br /></div>))}</div>
             </div>
           </li>
              )) }
